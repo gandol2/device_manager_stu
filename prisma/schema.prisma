@@ -1,0 +1,29 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  age      Int
+  addr     String // 열이름 타입
+  favfood  String?  @default("없음") // 타입? = 있어도되고 없어도되고
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
+
+model Post {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  title    String
+  body     String
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}

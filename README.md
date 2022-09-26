@@ -1,34 +1,82 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# create-next-app
 
-## Getting Started
+create-next-app 타입스크립트 적용
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
+```
+> npx create-next-app <폴더명> --typescript
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# prisma
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+database ORM 이다.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+1. VSCODE `prisma` 확장프로그램 설치
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+2. `prisma` 패키지 설치
 
-## Learn More
+```
+> npm i prisma -D
+> npx prisma init
+```
 
-To learn more about Next.js, take a look at the following resources:
+`/prisma/schema.prisma` 파일이 자동으로 생성
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`.env` 파일이 생성됨
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+`.gitignore` 파일에 `.env`를 추가
 
-## Deploy on Vercel
+```
+// .gitignore
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+.env
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+3. prisma 초기설정
+
+```
+// .env
+
+DATABASE_URL=<내 데이터베이스주소>
+
+```
+
+prisma/schema.prisma 파일 설정
+
+```
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // postgresql, mysql, sqlite, sqlserver, mongodb or cockroachdb
+  provider = "mongodb"      // 사용할 데이터베이스 지정
+  url      = env("DATABASE_URL")
+}
+
+model User{
+    ...
+}
+
+```
+
+4. 데이터베이스에 스키마 업로드
+
+```
+> npx prisma db push
+```
+
+5. prisma studio 실행 (데이터베이스 웹 클라이언트)
+
+이 명령어가 실행중에만 접속할 수 있음
+
+```
+>npx prisma studio
+```
+
+6. `prisma` client 설정
+
+```
+> npx prisma generate
+```
