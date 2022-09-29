@@ -1,47 +1,59 @@
-import { User } from "@prisma/client";
+import { Device } from "@prisma/client";
 import type { NextPage } from "next";
+import Link from "next/link";
 import { useEffect, useState } from "react";
-import Counter from "../components/Counter";
+import DeviceCard from "../components/DeviceCard";
+import Layout from "../components/Layout";
 
 const Home: NextPage = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  function 사용자추가함수() {
-    console.log("사용자 추가함수가 클릭되었습니다.");
-
-    fetch("/api/adduser");
-  }
+  const [devices, setDevices] = useState<Device[]>([]);
 
   useEffect(() => {
-    // 컴포넌트가 로딩될때 한번만 실행됨
-    // 사용자목록을 가져와서 state 변수에 저장
-
-    fetch("/api/alluser")
+    fetch("/api/device/all")
       .then((res) => res.json())
-      .then((json) => setUsers(json.users));
+      .then((json) => setDevices(json.alldevice));
   }, []);
 
   return (
-    <div>
-      <Counter title="첫번째 카운터" />
-      <button className="bg-gray-300 p-2 rounded m-2" onClick={사용자추가함수}>
-        사용자추가
-      </button>
-
-      <div className="flex flex-wrap">
-        {users.map((user) => (
-          <div key={user.id} className="border-2">
-            <div className="text-2xl font-bold">
-              <span>{user.name}</span>
-              <span> ({user.age}세)</span>
-            </div>
-
-            <div>{user.addr}</div>
-            <div>{user.favfood}</div>
-            <div className="text-gray-400">{user.createAt.toString()}</div>
+    <Layout title={"HOME"}>
+      <div className="h-full overflow-y-scroll p-6 space-y-7">
+        <div id="웰컴메시지" className="flex justify-between items-center">
+          <div>
+            <div className="text-5xl font-bold">Hello KSS 🖐</div>
+            <div className="text-gray-500">Welcome back to home</div>
           </div>
-        ))}
+          <Link href={"/setting"}>
+            <button className="sunmoon_btn space-x-2 py-4 px-5 rounded-lg flex">
+              <span>Add Device</span>
+              <span data-comment="플러스아이콘">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </span>
+            </button>
+          </Link>
+        </div>
+        <div id="링크드유" className="flex justify-between items-center">
+          <div className="text-3xl font-bold">Linked to you</div>
+          <div>[실시간버튼자리]</div>
+        </div>
+
+        <div id="센서목록" className="flex flex-wrap">
+          {devices.map((device, idx) => (
+            <DeviceCard key={idx} device={device}></DeviceCard>
+          ))}
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 
