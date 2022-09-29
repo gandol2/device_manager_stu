@@ -22,6 +22,7 @@ const Home: NextPage = () => {
     setProduct("");
     setMemo("");
     setErrorMessage("");
+    console.log("dd");
   }
 
   function 장비추가버튼클릭() {
@@ -161,8 +162,11 @@ const Home: NextPage = () => {
             <select
               className="h-12 ring-2 ring-black text-gray-800 px-2"
               onChange={장치종류변경}
+              value={type}
             >
-              <option hidden>장치종류를 선택하세요</option>
+              <option value="" hidden>
+                장치종류를 선택하세요
+              </option>
               <option value="TEMP">온도 센서</option>
               <option value="HUMI">습도 센선</option>
               <option value="CO2">CO2 센서</option>
