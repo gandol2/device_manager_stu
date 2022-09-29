@@ -68,5 +68,8 @@ export default async function handler(
     response.status(200).json({ ok: true, newDevice });
   } catch (err) {
     response.status(200).json({ ok: false, error: `${err}` });
+  } finally {
+    // 예외가 있던 없던 실행되는 블럭
+    await client.$disconnect();
   }
 }

@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "react-toggle/style.css";
+
 .sunmoon_btn {
   @apply text-white bg-gradient-to-t from-[#5593FF] to-[#A1E4F1];
   @apply dark:from-[#4b5054] dark:to-[#242627] dark:border dark:border-gray-500;

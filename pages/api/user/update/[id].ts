@@ -46,5 +46,8 @@ export default async function handler(
     res.status(200).json({ ok: true });
   } catch (err) {
     res.status(200).json({ ok: false, err: `${err}` });
+  } finally {
+    // 예외가 있던 없던 실행되는 블럭
+    await client.$disconnect();
   }
 }

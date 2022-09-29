@@ -5,7 +5,11 @@ import { useEffect, useState } from "react";
 import DeviceCard from "../components/DeviceCard";
 import Layout from "../components/Layout";
 
+import Toggle from "react-toggle";
+import { BounceLoader } from "react-spinners";
+
 const Home: NextPage = () => {
+  const [bToggle, setBToggle] = useState(false);
   const [devices, setDevices] = useState<Device[]>([]);
 
   useEffect(() => {
@@ -13,6 +17,17 @@ const Home: NextPage = () => {
       .then((res) => res.json())
       .then((json) => setDevices(json.alldevice));
   }, []);
+
+  function 토글변경() {
+    setBToggle(!bToggle);
+    // console.log(`토글변경됨 - ${!bToggle}`);
+
+    if (!bToggle) {
+      console.log("실시간 ON");
+    } else {
+      console.log("실시간 OFF");
+    }
+  }
 
   return (
     <Layout title={"HOME"}>
@@ -44,12 +59,33 @@ const Home: NextPage = () => {
         </div>
         <div id="링크드유" className="flex justify-between items-center">
           <div className="text-3xl font-bold">Linked to you</div>
-          <div>[실시간버튼자리]</div>
+          <div className="select-none flex items-center space-x-2 ">
+            {bToggle && (
+              <BounceLoader
+                color="#36d7b7"
+                size={30}
+                className="inline-block"
+              />
+            )}
+            <Toggle
+              id={"cheese-status"}
+              onChange={토글변경}
+              defaultChecked={bToggle}
+            />
+            <label htmlFor="cheese-status">
+              실시간 <span>{bToggle ? "ON" : "OFF"}</span>
+            </label>
+          </div>
         </div>
 
         <div id="센서목록" className="flex flex-wrap">
+          {0 < devices.length ? null : <div>등록된 장비가 없습니다</div>}
           {devices.map((device, idx) => (
-            <DeviceCard key={idx} device={device}></DeviceCard>
+            <DeviceCard
+              key={idx}
+              device={device}
+              realTime={bToggle}
+            ></DeviceCard>
           ))}
         </div>
       </div>
